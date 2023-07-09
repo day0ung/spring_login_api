@@ -1,15 +1,14 @@
 package com.made.api.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class LoginController {
 
     @GetMapping("/")
     public String index(){
-        return "index";
+        return "login";
     }
 
     @GetMapping("/login")
@@ -31,6 +30,11 @@ public class LoginController {
     @RequestMapping("/manager")
     public String Manager(){
         return "manager";
+    }
+
+    @GetMapping("/join")
+    public String join() {
+        return "join";
     }
 
 
