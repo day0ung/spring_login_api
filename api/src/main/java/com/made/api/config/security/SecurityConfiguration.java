@@ -36,7 +36,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginPage("/loginForm") //로그인을 하면 default로 보냄
                 //.usernameParameter("username2") loginForm.html에서 name="username"을 변경한다면 맞춰주어야 PrincipalDetailsService
                 .loginProcessingUrl("/login") // Login주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행 controller에서 /login을 만들지않아도됨
-                .defaultSuccessUrl("/");
+                .defaultSuccessUrl("/")
+                .and()
+                .oauth2Login()
+                .loginPage("/loginForm") //구글 로그인이 완료된 후 후처리 필요
+                ;
 
     }
 }

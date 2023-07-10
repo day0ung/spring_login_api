@@ -17,7 +17,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       properties:
@@ -28,6 +28,19 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 660175457618-mkbjeknutbeq8vcr7j1b5kr16f0idu2e.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
+
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
+
