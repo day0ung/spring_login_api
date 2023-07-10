@@ -1,10 +1,20 @@
 package com.made.api.controller;
 
+import com.made.api.domain.User;
+import com.made.api.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class LoginController {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/")
     public String index(){
@@ -32,9 +42,20 @@ public class LoginController {
         return "manager";
     }
 
-    @GetMapping("/join")
-    public String join() {
-        return "join";
+    @PostMapping("/join")
+    public String join(User user) {
+        System.out.println(user);
+        user.setRole("ROLE_USER");
+        //userRepository.save(user); // -> 시큐리티로 로그인을 할수 없음 패스워드 암호화가 안돼어서
+        String encodePassword = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encodePassword);
+        userRepository.save(user);
+        return "redirect:/login";
+    }
+
+    @GetMapping("/joinForm")
+    public String joinForm() {
+        return "joinForm";
     }
 
 

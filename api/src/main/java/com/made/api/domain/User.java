@@ -4,12 +4,10 @@ package com.made.api.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,12 +17,19 @@ import java.time.LocalDateTime;
 @Table(name = "USER")
 public class User {
 
-    @Id
+    @Id //primary key
     @Column(length = 20)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(length = 100, nullable = false)
+    private String name;
 
     @Column(length = 100, nullable = false)
     private String email;
+
+    @Column(length = 100, nullable = false)
+    private String password;
 
     @Column(columnDefinition = "TINYINT")
     private int active = 1;
@@ -32,14 +37,12 @@ public class User {
     @Column(unique = true)
     private String refreshToken;
 
-    @Column(length = 2)
-    private String gender;
+    @Column(length = 50)
+    private String role;
 
-    @Column(length = 5)
-    private int age;
 
     @Column
-    @UpdateTimestamp
+    @CreationTimestamp
     private LocalDateTime uptDt;
 
 }
