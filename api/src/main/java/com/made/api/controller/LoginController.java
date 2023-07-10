@@ -18,13 +18,18 @@ public class LoginController {
 
     @GetMapping("/")
     public String index(){
-        return "login";
+        return "index";
     }
 
-    @GetMapping("/login")
-    //초기에 login페이지를 security가 낚아챔 -> SecurityConfiguration 설정후엔 사라짐
-    public String Login(){
-        return "login";
+//    @GetMapping("/login")
+//    //초기에 login페이지를 security가 낚아챔 -> SecurityConfiguration 설정후엔 사라짐
+//    public String Login(){
+//        return "loginForm";
+//    }
+
+    @GetMapping("/loginForm")
+    public String loginForm(){
+        return "loginForm";
     }
 
     @RequestMapping("/user")
@@ -50,7 +55,7 @@ public class LoginController {
         String encodePassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
         userRepository.save(user);
-        return "redirect:/login";
+        return "redirect:/loginForm";
     }
 
     @GetMapping("/joinForm")

@@ -24,14 +24,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable(); //csrf비활성화
         http.authorizeRequests()
-                .antMatchers("/user/**").authenticated()
+                .antMatchers("/user/**").authenticated() // 인증만되면 들어갈수 있는 주소
                 .antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
 //                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN') and hasRole('ROLE_USER')")
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll() //나머지주소는 모두 권한허용
                 .and()
                 .formLogin()
-                .loginPage("/login");
+                .loginPage("/loginForm") //로그인을 하면 default로 보냄
+                //.usernameParameter("username2") loginForm.html에서 name="username"을 변경한다면 맞춰주어야 PrincipalDetailsService
+                .loginProcessingUrl("/login") // Login주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행 controller에서 /login을 만들지않아도됨
+                .defaultSuccessUrl("/");
 
     }
 }
