@@ -1,16 +1,21 @@
 package com.made.api.controller;
 
+import com.made.api.config.auth.PrincipalDetails;
 import com.made.api.domain.User;
 import com.made.api.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@Slf4j
 public class LoginController {
 
     @Autowired
@@ -18,6 +23,23 @@ public class LoginController {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @GetMapping("/test/login")
+    public @ResponseBody String loginTest(Authentication authentication){
+        System.out.println("testlogin");
+        System.out.println("authentication" + authentication.getPrincipal());
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        log.info(principalDetails.getUsername());
+        return "세션 정보 확인";
+    }
+    @GetMapping("/test/oauth/login")
+    public @ResponseBody String loginOAuthTest(Authentication authentication,
+                                               @AuthenticationPrincipal OAuth2User oauth){
+        System.out.println("loginOAuthTest");
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        log.info("loginOAuthTest : {} , AuthenticationPrincipal: {} ", oAuth2User.getAttributes(), oauth.getAttributes());
+        return "OAuth세션 정보 확인";
+    }
 
     @GetMapping("/")
     public String index(){
