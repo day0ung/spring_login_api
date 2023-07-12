@@ -1,4 +1,7 @@
 spring:
+  main:
+    allow-circular-references: true
+
   datasource:
     url: ENC(ZRl6t1LSC6ZB5kJNthOJsZEy2eIDkbXlioy2VCNO4P5E17WBIkarVUYsq1xgQ5K8Ki3J2hTpBF2gMOOXW65NmddR+9kXgudSa2QbN8iFfq9wW3O1XvYKSBe901Clrz5f83YdHcWGTrdzLSoWPRUJ5A==)
     driver-class-name: org.mariadb.jdbc.Driver # runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
