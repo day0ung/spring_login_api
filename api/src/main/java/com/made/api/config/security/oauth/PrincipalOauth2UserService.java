@@ -1,6 +1,9 @@
 package com.made.api.config.security.oauth;
 
 import com.made.api.config.security.auth.PrincipalDetails;
+import com.made.api.config.security.oauth.provider.FaceBookProvider;
+import com.made.api.config.security.oauth.provider.GoogleProvider;
+import com.made.api.config.security.oauth.provider.OAuth2Provider;
 import com.made.api.domain.User;
 import com.made.api.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -38,13 +41,27 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
          */
 
         //super.loadUser(userRequest).getAttributes() 정보를 토대로 강제로 회원가입
-        String provider = userRequest.getClientRegistration().getClientId(); //google
-        String providerId = oAuth2User.getAttribute("sub");
+        /*
+        Google과 FaceBook의 attribute가 다르기 때문에 Interface생성해 분기처리
+         */
+        OAuth2Provider oAuth2Provider = null;
+        if(userRequest.getClientRegistration().getRegistrationId().equals("google")){
+            oAuth2Provider =  new GoogleProvider(oAuth2User.getAttributes());
+            log.info("google");
+        } else if(userRequest.getClientRegistration().getRegistrationId().equals("facebook")){
+            oAuth2Provider =  new FaceBookProvider(oAuth2User.getAttributes());
+            log.info("faceBook");
+        } else{
+            log.info("구글과 페이스북만 지원해요");
+        }
+
+
+        String provider = oAuth2Provider.getProvider();
+        String providerId = oAuth2Provider.getProviderId();// oAuth2User.getAttribute("sub"); //facebook = "id",
         String username = String.format("%s_%s", provider, providerId);
         String password = bCryptPasswordEncoder.encode("겟인데어");
-        String email = oAuth2User.getAttribute("email");
+        String email = oAuth2Provider.getEmail();
         String role= "ROLE_USER";
-
         User user  = userRepository.findByUsername(username);
 
         if (user == null){

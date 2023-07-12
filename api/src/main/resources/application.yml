@@ -42,6 +42,13 @@ spring:
               - email
               - profile
 
+          facebook:
+            client-id: 807673720975917
+            client-secret: 458f534c42198473702a429fda7fbf38
+            scope:
+              - email
+              - public_profile
+
 
 jasypt:
   encryptor:
