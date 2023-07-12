@@ -57,8 +57,14 @@ public class LoginController {
         return "loginForm";
     }
 
+
+    /*
+    OAuth로그인, 일반로그인 둘다 <PrincipalDetails>
+    @AuthenticationPrincipal Spring Security의 인증된 사용자 정보에 접근할 때 사용
+     */
     @RequestMapping("/user")
-    public String User(){
+    public @ResponseBody String User(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        log.info("PrincipalDetails: {}", principalDetails.getUser());
         return "user";
     }
 
