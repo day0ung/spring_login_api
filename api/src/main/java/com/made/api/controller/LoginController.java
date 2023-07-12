@@ -1,6 +1,6 @@
 package com.made.api.controller;
 
-import com.made.api.config.auth.PrincipalDetails;
+import com.made.api.config.security.auth.PrincipalDetails;
 import com.made.api.domain.User;
 import com.made.api.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;

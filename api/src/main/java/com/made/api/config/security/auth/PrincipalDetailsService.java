@@ -1,4 +1,4 @@
-package com.made.api.config.auth;
+package com.made.api.config.security.auth;
 
 import com.made.api.domain.User;
 import com.made.api.repository.UserRepository;
