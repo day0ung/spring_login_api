@@ -1,10 +1,7 @@
 package com.made.api.config.security.oauth;
 
 import com.made.api.config.security.auth.PrincipalDetails;
-import com.made.api.config.security.oauth.provider.FaceBookProvider;
-import com.made.api.config.security.oauth.provider.GoogleProvider;
-import com.made.api.config.security.oauth.provider.NaverProvider;
-import com.made.api.config.security.oauth.provider.OAuth2Provider;
+import com.made.api.config.security.oauth.provider.*;
 import com.made.api.domain.User;
 import com.made.api.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +54,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         }else if(userRequest.getClientRegistration().getRegistrationId().equals("naver")){
             oAuth2Provider =  new NaverProvider((Map)oAuth2User.getAttributes().get("response"));
             log.info("naver");
+        } else if(userRequest.getClientRegistration().getRegistrationId().equals("kakao")){
+            oAuth2Provider =  new KakaoProvider(oAuth2User.getAttributes());
+            log.info("kakao");
         } else{
             log.info("구글과 페이스북만 지원해요");
         }
