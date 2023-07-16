@@ -1,0 +1,35 @@
+
+spring:
+  main:
+    allow-circular-references: true
+
+  datasource:
+    url: ENC(ZRl6t1LSC6ZB5kJNthOJsZEy2eIDkbXlioy2VCNO4P5E17WBIkarVUYsq1xgQ5K8Ki3J2hTpBF2gMOOXW65NmddR+9kXgudSa2QbN8iFfq9wW3O1XvYKSBe901Clrz5f83YdHcWGTrdzLSoWPRUJ5A==)
+    driver-class-name: org.mariadb.jdbc.Driver # runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    username: ENC(/+lB26gh6Xwda/uc8XN6Dg==)
+    password: ENC(AKia6xht1TJEbrcNNO5pOg==)
+
+    hikari:
+      connection-init-sql: SELECT 1
+      minimum-idle: 1
+      idle-timeout: 300000
+      maximum-pool-size: 31
+      max-lifetime: 540000
+      username: ENC(/+lB26gh6Xwda/uc8XN6Dg==)
+      password: ENC(AKia6xht1TJEbrcNNO5pOg==)
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true
+
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
