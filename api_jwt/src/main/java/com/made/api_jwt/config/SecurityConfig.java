@@ -2,12 +2,15 @@ package com.made.api_jwt.config;
 
 import com.made.api_jwt.filter.MyFilter1;
 import com.made.api_jwt.filter.MyFilter3;
+import com.made.api_jwt.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
@@ -17,6 +20,11 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsFilter corsFilter;
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,11 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         /*
         http.addFilter(new MyFilter1());
         Error : Consider using addFilterBefore or addFilterAfter instead.
-
+        Solve :  http.addFilterBefore(new MyFilter3(), BasicAuthenticationFilter.class);
         Security filterchain이 내가만든 MyFilter보다 먼저실행된다
          */
-        http.addFilterBefore(new MyFilter3(), BasicAuthenticationFilter.class);
-        http.addFilter(corsFilter); //인증이 필요한요청(로그인) - 시큐리티 필터에 등록해주어야함 but @CrossOrigin(인증 X)
+
+        http.addFilter(corsFilter) //인증이 필요한요청(로그인) - 시큐리티 필터에 등록해주어야함 but @CrossOrigin(인증 X)
+                .addFilter(new JwtAuthenticationFilter(authenticationManager())); //AuthenticationManager
 
 
     }
