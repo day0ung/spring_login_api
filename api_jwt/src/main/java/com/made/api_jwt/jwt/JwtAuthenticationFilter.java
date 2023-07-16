@@ -1,5 +1,7 @@
 package com.made.api_jwt.jwt;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.made.api_jwt.auth.PrincipalDetails;
 import com.made.api_jwt.model.User;
@@ -9,12 +11,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 /*
 Spring Security 에서 UsernamePasswordAuthenticationFilter 흐름
@@ -55,13 +59,21 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         System.out.println("Login Success" + principalDetails.getUser().getUsername());
-
         return authentication;
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         System.out.println("successfulAuthentication : 인증이 완료되었다는뜻");
-        super.successfulAuthentication(request, response, chain, authResult);
+        LocalDateTime now = LocalDateTime.now();
+        PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+        String jwtToken = JWT.create()
+                .withSubject(principalDetails.getUser().getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + (60000 * 10)))
+                .withClaim("id", principalDetails.getUser().getId())
+                .withClaim("username", principalDetails.getUser().getUsername())
+                .sign(Algorithm.HMAC512("cos"));
+
+        response.addHeader("Authorization", "Bearer "+jwtToken);
     }
 }
