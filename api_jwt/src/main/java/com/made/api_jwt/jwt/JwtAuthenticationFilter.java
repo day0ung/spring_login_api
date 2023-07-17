@@ -75,5 +75,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(Algorithm.HMAC512("cos"));
 
         response.addHeader("Authorization", "Bearer "+jwtToken);
+        /*
+        서버는 JWT토큰이 유효한지를 판단(필터를 만들어야함)
+
+         */
     }
 }

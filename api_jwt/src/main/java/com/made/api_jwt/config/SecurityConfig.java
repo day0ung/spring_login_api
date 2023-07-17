@@ -1,8 +1,8 @@
 package com.made.api_jwt.config;
 
-import com.made.api_jwt.filter.MyFilter1;
-import com.made.api_jwt.filter.MyFilter3;
 import com.made.api_jwt.jwt.JwtAuthenticationFilter;
+import com.made.api_jwt.jwt.JwtAuthorizationFilter;
+import com.made.api_jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
@@ -20,6 +19,8 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsFilter corsFilter;
+
+    private  final UserRepository userRepository;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -50,7 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          */
 
         http.addFilter(corsFilter) //인증이 필요한요청(로그인) - 시큐리티 필터에 등록해주어야함 but @CrossOrigin(인증 X)
-                .addFilter(new JwtAuthenticationFilter(authenticationManager())); //AuthenticationManager
+            .addFilter(new JwtAuthenticationFilter(authenticationManager())) //AuthenticationManager
+            .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository));
 
 
     }

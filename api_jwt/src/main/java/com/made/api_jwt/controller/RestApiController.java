@@ -34,8 +34,19 @@ public class RestApiController {
         /*
         Headers Content-Type = application/json
          */
-
     }
+
+    @GetMapping("/api/v1/user")
+    public String user(){
+        return "user";
+    }
+
+    @GetMapping("/api/v1/admin")
+    public String admin(){
+        return "admin";
+    }
+
+
 
 
 
