@@ -32,6 +32,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("getClientRegistration" + userRequest.getClientRegistration()); //registrationId로 어떤 OAuth로 로그인했는지 확인가능
         System.out.println("getAccessToken" + userRequest.getAccessToken());
 
+        String userNameAttributeName = userRequest.getClientRegistration()
+                .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); //OAuth2 로그인 시 키(PK)가 되는 값 : 구글 - "sub", 카카오 - "id", 네이버 - "id"
+
         OAuth2User oAuth2User = super.loadUser(userRequest);
         log.info("getAttributes : {}",super.loadUser(userRequest).getAttributes() );
         /*
